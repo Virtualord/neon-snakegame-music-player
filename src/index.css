@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-pink: #ff00ff;
+  --color-neon-blue: #00ffff;
+  --color-neon-purple: #bc13fe;
+  --color-neon-green: #39ff14;
+  --color-glitch-cyan: #00ffff;
+  --color-glitch-magenta: #ff00ff;
+  --font-display: "Press Start 2P", cursive;
+  --font-mono: "Courier New", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-glitch-cyan overflow-hidden;
+    font-family: 'Press Start 2P', cursive;
+  }
+}
+
+/* Glitch Animations */
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes noise {
+  0% { clip-path: inset(40% 0 61% 0); }
+  20% { clip-path: inset(92% 0 1% 0); }
+  40% { clip-path: inset(43% 0 1% 0); }
+  60% { clip-path: inset(25% 0 58% 0); }
+  80% { clip-path: inset(54% 0 7% 0); }
+  100% { clip-path: inset(58% 0 43% 0); }
+}
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 theme('colors.glitch-magenta');
+  clip-path: inset(45% 0 0 0);
+  animation: glitch 2s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 theme('colors.glitch-cyan');
+  clip-path: inset(0 0 55% 0);
+  animation: glitch 3s infinite linear alternate-reverse;
+}
+
+.scanline {
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 255, 255, 0.1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  pointer-events: none;
+  animation: scanline 6s linear infinite;
+}
+
+@keyframes scanline {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 118, 0.06));
+  z-index: 100;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+.pixel-border {
+  border: 4px solid theme('colors.glitch-cyan');
+  box-shadow: 4px 4px 0 theme('colors.glitch-magenta');
+}
+
+.pixel-button {
+  @apply bg-glitch-cyan text-black px-4 py-2 uppercase font-bold transition-all;
+  box-shadow: 4px 4px 0 theme('colors.glitch-magenta');
+}
+
+.pixel-button:hover {
+  @apply bg-glitch-magenta text-white;
+  box-shadow: 4px 4px 0 theme('colors.glitch-cyan');
+  transform: translate(-2px, -2px);
+}
+
+.pixel-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0;
+}
